@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   post 'users/:id/request', to: 'users#request_friend'
-  post 'users/:id/accept', to: 'users#accept_friend'
-  post 'users/:id/decline', to: 'users#decline_friend'
+  get 'users/:id/accept', to: 'users#accept_friend'
+  get 'users/:id/decline', to: 'users#decline_friend'
 
   resources :users, only: [:index, :show]
   resources :posts, only: [:index, :create] do
