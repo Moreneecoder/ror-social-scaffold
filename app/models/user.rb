@@ -12,4 +12,12 @@ class User < ApplicationRecord
 
   has_many :friendships
   has_many :inverse_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
+
+  def pending_friends
+    friendships.map { |friendship| friendship.friend unless friendship.status }.compact
+  end
+
+  def friends
+    friendships.map { |friendship| friendship.friend if friendship.status }.compact
+  end
 end
