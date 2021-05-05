@@ -46,8 +46,13 @@ RSpec.describe User, type: :model do
         expect(user.macro).to eq(:has_many)
     end
 
-    it 'has many friendships' do
+    it 'has many sent friendships' do
         user = User.reflect_on_association(:friendships)
+        expect(user.macro).to eq(:has_many)
+    end
+
+    it 'has many received friendships' do
+        user = User.reflect_on_association(:inverse_friendships)
         expect(user.macro).to eq(:has_many)
     end
   end
