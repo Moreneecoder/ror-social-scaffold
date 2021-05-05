@@ -16,4 +16,12 @@ class UsersController < ApplicationController
     flash[:notice] = 'Friend Request Successfully Sent'
     redirect_to users_path
   end
+
+  def accept_friend
+    current_user.accept_friendship(params[:id])
+    user = User.find(params[:id])
+
+    flash[:notice] = "You Accepted #{user.name}'s Friend Request!"
+    redirect_to users_path
+  end
 end

@@ -18,10 +18,19 @@ class User < ApplicationRecord
   end
 
   def friends
-    friendships.map { |friendship| friendship.friend if friendship.status }.compact
+    friends_array = friendships.map { |friendship| friendship.friend if friendship.status }
+    inverse_friends_array = inverse_friendships.map { |friendship| friendship.user if friendship.status }
+    friends_array.push(*inverse_friends_array).compact
+    # friends_array.compact
   end
 
   def friend_requests
-    inverse_friendships.map{|friendship| friendship.user if !friendship.status}.compact
+    inverse_friendships.map { |friendship| friendship.user unless friendship.status }.compact
+  end
+
+  def accept_friendship(user_id)
+    request = inverse_friendships.where(user_id: user_id).where(status: false).first
+    request.status = true
+    request.save
   end
 end
