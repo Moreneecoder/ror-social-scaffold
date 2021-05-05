@@ -24,4 +24,12 @@ class UsersController < ApplicationController
     flash[:notice] = "You Accepted #{user.name}'s Friend Request!"
     redirect_to users_path
   end
+
+  def decline_friend
+    current_user.decline_friendship(params[:id])
+    user = User.find(params[:id])
+
+    flash[:notice] = "You Declined #{user.name}'s Friend Request!"
+    redirect_to users_path
+  end
 end

@@ -33,4 +33,9 @@ class User < ApplicationRecord
     request.status = true
     request.save
   end
+
+  def decline_friendship(user_id)
+    request = inverse_friendships.where(user_id: user_id).where(status: false).first
+    request.destroy
+  end
 end
