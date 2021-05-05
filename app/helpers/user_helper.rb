@@ -4,7 +4,7 @@ module UserHelper
       link_to 'Invitation pending', class: 'profile-link'
     elsif two_way_pending_request(user) && !current_user.friends.include?(user) && current_user != user
 
-      link_to 'Send friend request', "/users/#{user.id}/request", method: 'post', class: 'profile-link'
+      link_to 'Send friend request', "/users/#{user.id}/request", class: 'profile-link'
     elsif current_user.friend_requests.include?(user)
 
       concat(link_to('Accept Request', "/users/#{user.id}/accept", class: 'profile-link'))
