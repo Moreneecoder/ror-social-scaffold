@@ -7,5 +7,9 @@ RSpec.describe User, type: :model do
       expect(friendship.macro).to eq(:belongs_to)
     end
 
+    it 'belongs to a friend' do
+        friendship = Friendship.reflect_on_association(:friend)
+        expect(friendship.macro).to eq(:belongs_to)
+    end
   end
 end
