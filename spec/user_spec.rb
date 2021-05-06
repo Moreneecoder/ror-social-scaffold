@@ -83,4 +83,23 @@ RSpec.describe User, type: :model do
 
   end
 
+  describe '#friends' do
+    it 'returns an array' do
+      login_as(current_user, scope: :user)
+
+      pending_requests = current_user.friends
+      expect(pending_requests).to be_an Array
+    end
+
+    it 'should return an array with status true for all containing object' do
+      login_as(current_user, scope: :user)
+      current_user.friendships.build(friend_id: user.id, status: true).save
+
+      requests = current_user.friends
+      request_statuses = requests.map { |user| user.inverse_friendships.where(user_id: current_user.id).accepted_requests.first.status }.compact
+      expect(request_statuses.all?(true)).to be true
+    end
+    
+  end
+
 end
