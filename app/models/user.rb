@@ -21,7 +21,6 @@ class User < ApplicationRecord
     friends_array = friendships.map { |friendship| friendship.friend if friendship.status }
     inverse_friends_array = inverse_friendships.map { |friendship| friendship.user if friendship.status }
     friends_array.push(*inverse_friends_array).compact
-    # friends_array.compact
   end
 
   def friend_requests
