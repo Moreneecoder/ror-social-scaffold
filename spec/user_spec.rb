@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  include Warden::Test::Helpers
+  Warden.test_mode!
+
+  let(:current_user) { User.create!(name: 'Tester', email: 'test@example.com', password: 'f4k3p455w0rd') }
+
   describe 'validations' do
     describe 'name' do
       it 'must be present' do
@@ -54,6 +59,15 @@ RSpec.describe User, type: :model do
     it 'has many received friendships' do
       user = User.reflect_on_association(:inverse_friendships)
       expect(user.macro).to eq(:has_many)
+    end
+  end
+
+  describe '#accept_friendship' do
+    it 'returns an array' do
+      login_as(current_user, scope: :user)
+
+      pending_requests = current_user.pending_friends
+      expect(pending_requests).to be_an Array
     end
   end
 end
