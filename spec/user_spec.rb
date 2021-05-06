@@ -5,6 +5,8 @@ RSpec.describe User, type: :model do
   Warden.test_mode!
 
   let(:current_user) { User.create!(name: 'Tester', email: 'test@example.com', password: 'f4k3p455w0rd') }
+  let(:user) { User.create(name: 'JohnDoe', email: 'johndoe@example.com', password: '123456') }
+  let(:user2) { User.create(name: 'Ying Yang', email: 'yingyang@example.com', password: '123456') }
 
   describe 'validations' do
     describe 'name' do
@@ -62,12 +64,23 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#accept_friendship' do
+  describe '#pending_friends' do
     it 'returns an array' do
       login_as(current_user, scope: :user)
 
       pending_requests = current_user.pending_friends
       expect(pending_requests).to be_an Array
     end
+
+    it 'should return an array with status false for all containing object' do
+      login_as(current_user, scope: :user)
+      current_user.friendships.build(friend_id: user.id, status: false).save
+
+      pending_requests = current_user.pending_friends
+      request_statuses = pending_requests.map { |user| user.inverse_friendships.where(user_id: current_user.id).pending_requests.first.status }.compact
+      expect(request_statuses.all?(false)).to be true
+    end
+
   end
+
 end
