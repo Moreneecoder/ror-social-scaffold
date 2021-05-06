@@ -131,4 +131,14 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '#decline_friendship' do
+    it 'should change friend request status to true' do
+      login_as(current_user, scope: :user)
+      user.friendships.build(friend_id: current_user.id, status: false).save
+
+      current_user.decline_friendship(user.id)
+      expect(current_user.friends[0]).to be nil
+    end
+  end
+
 end
