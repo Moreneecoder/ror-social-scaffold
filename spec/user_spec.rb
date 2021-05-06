@@ -77,10 +77,11 @@ RSpec.describe User, type: :model do
       current_user.friendships.build(friend_id: user.id, status: false).save
 
       pending_requests = current_user.pending_friends
-      request_statuses = pending_requests.map { |user| user.inverse_friendships.where(user_id: current_user.id).pending_requests.first.status }.compact
+      request_statuses = pending_requests.map do |user|
+        user.inverse_friendships.where(user_id: current_user.id).pending_requests.first.status
+      end.compact
       expect(request_statuses.all?(false)).to be true
     end
-
   end
 
   describe '#friends' do
@@ -96,10 +97,11 @@ RSpec.describe User, type: :model do
       current_user.friendships.build(friend_id: user.id, status: true).save
 
       requests = current_user.friends
-      request_statuses = requests.map { |user| user.inverse_friendships.where(user_id: current_user.id).accepted_requests.first.status }.compact
+      request_statuses = requests.map do |user|
+        user.inverse_friendships.where(user_id: current_user.id).accepted_requests.first.status
+      end.compact
       expect(request_statuses.all?(true)).to be true
     end
-    
   end
 
   describe '#friends_requests' do
@@ -116,7 +118,9 @@ RSpec.describe User, type: :model do
       user2.friendships.build(friend_id: current_user.id, status: false).save
 
       requests = current_user.friend_requests
-      request_statuses = requests.map { |user| user.friendships.where(friend_id: current_user.id).pending_requests.first.status }.compact
+      request_statuses = requests.map do |user|
+        user.friendships.where(friend_id: current_user.id).pending_requests.first.status
+      end.compact
       expect(request_statuses.all?(false)).to be true
     end
   end
@@ -140,5 +144,4 @@ RSpec.describe User, type: :model do
       expect(current_user.friends[0]).to be nil
     end
   end
-
 end
