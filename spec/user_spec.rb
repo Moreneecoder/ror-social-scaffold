@@ -110,7 +110,7 @@ RSpec.describe User, type: :model do
       expect(requests).to be_an Array
     end
 
-    it 'should return an array with status true for all containing object' do
+    it 'should return an array with status false for all containing object' do
       login_as(current_user, scope: :user)
       user.friendships.build(friend_id: current_user.id, status: false).save
       user2.friendships.build(friend_id: current_user.id, status: false).save
@@ -119,7 +119,16 @@ RSpec.describe User, type: :model do
       request_statuses = requests.map { |user| user.friendships.where(friend_id: current_user.id).pending_requests.first.status }.compact
       expect(request_statuses.all?(false)).to be true
     end
-    
+  end
+
+  describe '#accept_friendship' do
+    it 'should change friend request status to true' do
+      login_as(current_user, scope: :user)
+      user.friendships.build(friend_id: current_user.id, status: false).save
+
+      current_user.accept_friendship(user.id)
+      expect(current_user.friends[0]).to eq user
+    end
   end
 
 end
