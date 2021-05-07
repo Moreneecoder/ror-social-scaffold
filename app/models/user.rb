@@ -41,6 +41,6 @@ class User < ApplicationRecord
     request = inverse_friendships.where(user_id: user_id).where(status: false).first
     request.destroy
 
-    
+    friendships.where(friend_id: user_id).where(status: false).first.destroy
   end
 end
