@@ -18,9 +18,9 @@ class User < ApplicationRecord
   end
 
   def friends
-    friends_array = friendships.map { |friendship| friendship.friend if friendship.status }
-    inverse_friends_array = inverse_friendships.map { |friendship| friendship.user if friendship.status }
-    friends_array.push(*inverse_friends_array).compact
+    friends_array = friendships.map { |friendship| friendship.friend if friendship.status }.compact
+    # inverse_friends_array = inverse_friendships.map { |friendship| friendship.user if friendship.status }
+    # friends_array.push(*inverse_friends_array).compact
   end
 
   def friend_requests
@@ -31,10 +31,16 @@ class User < ApplicationRecord
     request = inverse_friendships.where(user_id: user_id).where(status: false).first
     request.status = true
     request.save
+
+    # build new friendship between current_user as user_id and user as friend_id with status true
+    friendships.build(friend_id: user_id, status: true).save
+
   end
 
   def decline_friendship(user_id)
     request = inverse_friendships.where(user_id: user_id).where(status: false).first
     request.destroy
+
+    
   end
 end
