@@ -32,7 +32,6 @@ class User < ApplicationRecord
     request.status = true
     request.save
 
-    # build new friendship between current_user as user_id and user as friend_id with status true
     friendships.build(friend_id: user_id, status: true).save
 
   end
@@ -40,7 +39,5 @@ class User < ApplicationRecord
   def decline_friendship(user_id)
     request = inverse_friendships.where(user_id: user_id).where(status: false).first
     request.destroy
-
-    friendships.where(friend_id: user_id).where(status: false).first.destroy
   end
 end
