@@ -133,6 +133,7 @@ RSpec.describe User, type: :model do
 
       current_user.accept_friendship(user.id)
       expect(current_user.friends[0]).to eq user
+      expect(user.friends[0]).to eq current_user
     end
   end
 
