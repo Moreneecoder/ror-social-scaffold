@@ -18,7 +18,7 @@ class User < ApplicationRecord
   end
 
   def friends
-    friends_array = friendships.map { |friendship| friendship.friend if friendship.status }.compact
+    friendships.map { |friendship| friendship.friend if friendship.status }.compact
   end
 
   def friend_requests
@@ -31,7 +31,6 @@ class User < ApplicationRecord
     request.save
 
     friendships.build(friend_id: user_id, status: true).save
-
   end
 
   def decline_friendship(user_id)

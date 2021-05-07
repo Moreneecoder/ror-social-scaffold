@@ -11,5 +11,4 @@ module UserHelper
       link_to ' | Decline Request', "/users/#{user.id}/decline", class: 'profile-link'
     end
   end
-
 end
