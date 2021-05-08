@@ -95,10 +95,11 @@ RSpec.describe User, type: :model do
     it 'should return an array with status true for all containing object' do
       login_as(current_user, scope: :user)
       current_user.friendships.build(friend_id: user.id, status: true).save
+      user.friendships.build(friend_id: current_user.id, status: true).save
 
       requests = current_user.friends
       request_statuses = requests.map do |user|
-        user.inverse_friendships.where(user_id: current_user.id).accepted_requests.first.status
+        user.friendships.where(friend_id: current_user.id).accepted_requests.first.status
       end.compact
       expect(request_statuses.all?(true)).to be true
     end
@@ -132,6 +133,7 @@ RSpec.describe User, type: :model do
 
       current_user.accept_friendship(user.id)
       expect(current_user.friends[0]).to eq user
+      expect(user.friends[0]).to eq current_user
     end
   end
 
