@@ -34,6 +34,7 @@ Setup database with:
 
 ```
    rails db:create
+   rails db:reset
    rails db:migrate
 ```
 
