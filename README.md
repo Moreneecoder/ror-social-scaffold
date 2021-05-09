@@ -9,7 +9,7 @@
 
 ## Live Demo
 
-TBA
+[keji-live-social](https://keji-social.herokuapp.com/)
 
 
 ## Getting Started
